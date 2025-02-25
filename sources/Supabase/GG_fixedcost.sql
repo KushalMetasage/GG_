@@ -1,0 +1,1 @@
+SELECT * FROM gg_mmr_fixedcost
