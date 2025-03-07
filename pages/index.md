@@ -1,4 +1,4 @@
-<div class="flex flex-col items-center justify-center p-10 mt-10 bg-gray-50 shadow-lg rounded-lg">
+<div class="flex flex-col items-center justify-center p-10 mt-10 bg-gray-50 shadow-lg rounded-lg mt-50 ml-50">
   <!-- Logo -->
   <img src="https://globalgreengroup.com/wp-content/uploads/2015/07/logo.png" 
        alt="Global Green" 
