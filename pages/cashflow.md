@@ -1,6 +1,7 @@
-<div style="position: relative; margin-bottom: 40px;">  
-    <h1 style="font-weight: bold; font-size: 30px; margin: 0;">💰 Cash Flow Analysis</h1>
+<div class="relative mb-10">  
+    <h1 class="text-lg m-0">💰 Cash Flow Analysis</h1>
 </div>
+
 
 <!-- Toggle Between Global Green India & Europe -->
 <ButtonGroup name="matric" display="tabs">
@@ -14,7 +15,7 @@
         <!-- Display Comments Dynamically -->
         <Details title='Cash Flow Commentary' open = true>
             {#each cashflow_comm as comment}
-                <p class="text-gray-300 text-lg">
+                <p class="text-gray-300 text-sm">
                     {inputs.matric === "Global Green India" ? comment.global_green_india : comment.global_green_europe}
                 </p>
             {/each}

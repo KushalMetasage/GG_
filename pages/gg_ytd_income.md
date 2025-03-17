@@ -1,8 +1,9 @@
 <Grid cols = 2>
 
-<div style="position: relative; margin-bottom: 40px;">  
-    <h1 style="font-weight: bold; font-size: 30px; margin: 0;">🏦 YTD Income Statement</h1>
+<div class="relative mb-10">  
+    <h1 class="text-lg m-0">🏦 YTD Income Statement</h1>
 </div>
+
 
 <div>
 <Dropdown data={date_filter} name=date_filter value=date_filter title="Fiscal Year" defaultValue="Apr-23 to Mar-24">
@@ -19,7 +20,7 @@
     </ButtonGroup>
 
     <!-- Last Updated Text on the Right -->
-    <p class="text-[14px] font-small text-white ml-auto">
+    <p class="text-[14px] font-small text-grey ml-auto">
         📅 Last Updated: <Value data={max_date} />
     </p>
 </div>

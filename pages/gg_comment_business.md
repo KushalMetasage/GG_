@@ -1,6 +1,7 @@
-<div style="position: relative; margin-bottom: 40px;">  
-    <h1 style="font-weight: bold; font-size: 30px; margin: 0;">📈 Business Comments</h1>
+<div class="relative mb-10">  
+    <h1 class="text-lg m-0">📈 Business Comments</h1>
 </div>
+
 
 
 <Details title='Jan’24 - Nov’24' open =true>

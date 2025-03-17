@@ -1,8 +1,9 @@
 <Grid cols = 2>
 
-<div style="position: relative; margin-bottom: 40px;">  
-    <h1 style="font-weight: bold; font-size: 30px; margin: 0;">💵 Consolidated Income</h1>
+<div class="relative mb-10">  
+    <h1 class="text-lg m-0">💵 Consolidated Income</h1>
 </div>
+
 
 
 <div>
@@ -15,7 +16,7 @@
 
 <div class = "ml-195">
  <!-- Last Updated Text on the Right -->
-    <p class="text-[14px] font-small text-white ml-auto">
+    <p class="text-[14px] font-small text-grey ml-auto">
         📅 Last Updated: <Value data={max_date} />
     </p>
 </div>

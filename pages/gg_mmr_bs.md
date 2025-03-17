@@ -2,10 +2,10 @@
  
 
 
-<div style="position: relative; margin-bottom: 40px;">  
-    
-    <h1 style="font-weight: bold; font-size: 30px; margin: 0;">📊 Balance Sheet</h1>
+<div class="relative mb-10">  
+    <h1 class="text-lg m-0">📊 Balance Sheet</h1>
 </div>
+
 
 <div class>
 
@@ -29,7 +29,7 @@
     </ButtonGroup>
 
     <!-- Last Updated Text on the Right -->
-    <p class="text-[14px] font-small text-white ml-auto">
+    <p class="text-[14px] font-small text-grey ml-auto">
         📅 Last Updated: <Value data={max_date} />
     </p>
 </div>
@@ -39,9 +39,9 @@
     <Details title='Balance Sheet Commentary' open = true>
         {#each BS_comm as comment}
             {#if inputs.matric === "GGE"}  <!-- Match with ButtonGroupItem value -->
-                <p class="text-gray-300 text-lg">{comment.global_green_europe}</p>
+                <p class="text-gray-300 text-sm">{comment.global_green_europe}</p>
             {:else}
-                <p class="text-gray-300 text-lg">{comment.global_green_india}</p>
+                <p class="text-gray-300 text-sm">{comment.global_green_india}</p>
             {/if}
         {/each}
     </Details>
