@@ -52,7 +52,7 @@
     groupBy="subcategory" 
     subtotals=true 
     totalRow=true
-    groupsOpen=false
+    groupsOpen=true
     totalLabel="Total"
     rowshadowing={true}
     headerFontColor=Bold
@@ -62,20 +62,22 @@
    <Column id="subcategory" 
         name="Sub-Category"  
         totalFmt="Total" 
-        totalAgg="Total"
+        totalAgg=""
         subtotalFmt='@value' />
          
 
     
     <Column id="particulars" 
-            name="Particulars" 
-            totalFmt='0 "Line Items"'/>
+            name="Particulars"
+            totalFmt='0 "Line Items"'
+            totalAgg=""/>
 
     
      <Column 
         id="Selected_Date_1"
         name="${inputs.date_filter.value}"
-        fmt="$0.00" 
+        fmt="0.00"
+        align="center" 
         totalAgg="sum" 
         subtotalAgg="sum"
         title = '{inputs.date_filter.value}'
@@ -84,8 +86,9 @@
    <Column 
         id="Selected_Date_2"
         name="${inputs.date_filter_1.value}" 
-        fmt="$0.00" 
-        totalAgg="sum" 
+        fmt="0.00" 
+        totalAgg="sum"
+        align="center" 
         subtotalAgg="sum"
         title = '{inputs.date_filter_1.value}'
     />
@@ -93,10 +96,11 @@
      <Column 
         id="Variance" 
         name={"Variance (${inputs.date_filter_1.value} vs ${inputs.date_filter.value})"} 
-        fmt="$0.00" 
+        fmt="0.00" 
         totalAgg="sum" 
         subtotalAgg="sum"
         title="Variance"
+        align="center"
         contentType="delta"
         wrapTitle={true}
     />      

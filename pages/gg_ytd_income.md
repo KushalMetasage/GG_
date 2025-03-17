@@ -26,13 +26,13 @@
 </div>
 
 <DataTable data={ytd} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD">
-<Column id= "fiscal_year" fmt=0/>
-<Column id= "metric_name" fmt=0/>
-<Column id= "CY Actual" fmt='0.00'/>
-<Column id= "YTD AOP" fmt='0.00'/>
-<Column id= "LY Actual YTD" fmt='0.00'/>
-<Column id= "Variance vs AOP YTD" fmt='0.00'/>
-<Column id= "Variance vs LY YTD" fmt='0.00'/>
+<Column id= "fiscal_year" fmt=0 align="center"/>
+<Column id= "metric_name" fmt=0 />
+<Column id= "CY Actual" fmt='0.00' align="center"/>
+<Column id= "YTD AOP" fmt='0.00' align="center"/>
+<Column id= "LY Actual YTD" fmt='0.00' align="center"/>
+<Column id= "Variance vs AOP YTD" fmt='0.00' align="center"/>
+<Column id= "Variance vs LY YTD" fmt='0.00' align="center"/>
 </DataTable>
 
 ```sql date_filter

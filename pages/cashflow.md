@@ -27,9 +27,9 @@
     <div>
         <DataTable data={cashflow} rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title="Values are in Million USD">
             <Column id="particular" title="Metric"/>
-            <Column id="Dec 2023" align="center" title="Dec 2023" fmt="usd"/>
-            <Column id="Dec 2024" align="center" title="Dec 2024" fmt="usd"/>
-            <Column id="Net Change" align="center" title="Net Change" contentType="delta" fmt="usd"/>
+            <Column id="Dec 2023" align="center" title="Dec 2023" fmt="0.00"/>
+            <Column id="Dec 2024" align="center" title="Dec 2024" fmt="0.00"/>
+            <Column id="Net Change" align="center" title="Net Change" contentType="delta" fmt="0.00"/>
         </DataTable>
     </div>
 

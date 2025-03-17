@@ -23,20 +23,20 @@
 
 <DataTable data={gg_cons} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD">
  <Column id= "particulars" fmt=0/>
- <Column id= "CY Actual" fmt='0.00'/>
- <Column id= "CY AOP" fmt='0.00'/>
- <Column id= "LY Actual" fmt='0.00'/>
- <Column id= "Variance vs AOP" fmt='0.00'/>
- <Column id= "Variance vs LY" fmt='0.00'/>
+ <Column id= "CY Actual" fmt='0.00' align="center"/>
+ <Column id= "CY AOP" fmt='0.00' align="center"/>
+ <Column id= "LY Actual" fmt='0.00' align="center"/>
+ <Column id= "Variance vs AOP" fmt='0.00' align="center"/>
+ <Column id= "Variance vs LY" fmt='0.00' align="center"/>
 </DataTable>
 
 <DataTable data={gg_margins} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700>
 <Column id= "particulars" fmt=0/>
- <Column id= "CY Actual" fmt='0.00'/>
- <Column id= "CY AOP" fmt='0.00'/>
- <Column id= "LY Actual" fmt='0.00'/>
- <Column id= "Variance vs AOP" fmt='0.00'/>
- <Column id= "Variance vs LY" fmt='0.00'/>
+ <Column id= "CY Actual" fmt='0.00' align="center"/>
+ <Column id= "CY AOP" fmt='0.00' align="center"/>
+ <Column id= "LY Actual" fmt='0.00' align="center"/>
+ <Column id= "Variance vs AOP" fmt='0.00' align="center"/>
+ <Column id= "Variance vs LY" fmt='0.00' align="center"/>
 </DataTable>
 
 ```sql date_filter

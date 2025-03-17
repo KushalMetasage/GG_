@@ -30,22 +30,22 @@
 <DataTable data={plant_1} rows=20 groupBy=plant groupType=section rowshadowing={true} headerFontColor=Bold headerColor=#FFD700>
     <!-- Define Dynamic colGroup -->
     <Column id="category" totalAgg=sum fmt='0' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}"/>
-    <Column id="CY Actual" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}"/>
-    <Column id="CY Aop" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}"/>
-    <Column id="LY Actual" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}"/>
-    <Column id="ACT vs AOP %" totalAgg="weightedMean" fmt='0.00"%"' contentType=delta colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}"/>
-    <Column id="Growth vs LY %" totalAgg="weightedMean" fmt='0.00"%"' contentType=delta colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}"/>
+    <Column id="CY Actual" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}" align="center"/>
+    <Column id="CY Aop" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}" align="center"/>
+    <Column id="LY Actual" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}" align="center"/>
+    <Column id="ACT vs AOP %" totalAgg="weightedMean" fmt='0.00"%"' contentType=delta colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}" align="center"/>
+    <Column id="Growth vs LY %" totalAgg="weightedMean" fmt='0.00"%"' contentType=delta colGroup="{inputs.matric == 'GGE' ? 'Duna' : 'OBL'}" align="center"/>
 </DataTable>
 </div>
 
 <div class="mt-25">
 <DataTable data={plant_2} rows=20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700>
     <Column id="category" totalAgg=sum fmt='0' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}"/>
-    <Column id="CY Actual" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}"/>
-    <Column id="CY Aop" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}"/>
-    <Column id="LY Actual" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}"/>
-    <Column id="ACT vs AOP %" totalAgg="weightedMean" fmt='0.00"%"' contentType=delta colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}"/>
-    <Column id="Growth vs LY %" totalAgg="weightedMean" fmt='0.00"%"' contentType=delta colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}"/>
+    <Column id="CY Actual" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}" align="center"/>
+    <Column id="CY Aop" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}" align="center"/>
+    <Column id="LY Actual" totalAgg=sum fmt='0.00' totalFmt='0' colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}" align="center"/>
+    <Column id="ACT vs AOP %" totalAgg="weightedMean" fmt='0.00"%"' contentType=delta colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}" align="center"/>
+    <Column id="Growth vs LY %" totalAgg="weightedMean" fmt='0.00"%"' contentType=delta colGroup="{inputs.matric == 'GGE' ? 'Puszta' : 'VKP'}" align="center"/>
 </DataTable>
 </div>
 
