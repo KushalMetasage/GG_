@@ -19,7 +19,7 @@
 
 <!-- Updated Text Section: Aligned to Left -->
 <div class="max-w-3xl mt-6 ml-55 text-left">
-  <p class="text-gray-300 text-sm">
+  <p class="text-gray-500 text-sm">
     The <span class="text-blue-500">MMR Dashboard</span> delivers 
     <span class="text-green-400">real-time financial insights</span>, enhancing reporting efficiency and simplifying  
     the tracking of key metrics. By providing accurate, up-to-date data, it supports  
