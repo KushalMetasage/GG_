@@ -2,7 +2,7 @@
  
 
 
-<div class="relative mb-10">  
+<div class="relative">  
     <h1 class="text-lg m-0">📊 Balance Sheet</h1>
 </div>
 
@@ -29,7 +29,7 @@
     </ButtonGroup>
 
     <!-- Last Updated Text on the Right -->
-    <p class="text-[14px] font-small text-grey ml-auto">
+    <p class="text-sm text-grey ml-auto">
         📅 Last Updated: <Value data={max_date} />
     </p>
 </div>

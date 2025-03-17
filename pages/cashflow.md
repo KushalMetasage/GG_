@@ -1,4 +1,4 @@
-<div class="relative mb-10">  
+<div class="relative">  
     <h1 class="text-lg m-0">💰 Cash Flow Analysis</h1>
 </div>
 
