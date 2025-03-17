@@ -1,16 +1,29 @@
+<Grid cols = 2>
+
 <div style="position: relative; margin-bottom: 40px;">  
-    <h1 style="font-weight: bold; font-size: 30px; margin: 0;">🏭 PlantUtilization</h1>
+    <h1 style="font-weight: bold; font-size: 30px; margin: 0;">🏭 Plant Utilization</h1>
 </div>
 
-<center>
-<Dropdown data={date_filter} name=date_filter value=date_filter title="Date" defaultValue="2023-01-01">
-</Dropdown>
-</center>
 
-<ButtonGroup name="matric" display="tabs">
-    <ButtonGroupItem valueLabel="Global Green India" value="GGCL" default />
-    <ButtonGroupItem valueLabel="Global Green Europe" value="GGE" />
-</ButtonGroup>
+<div>
+<Dropdown data={date_filter} name=date_filter value=date_filter title="Date" defaultValue="Jan-25">
+</Dropdown>
+</div>
+
+</Grid>
+ 
+<div class="flex items-center justify-between w-full">
+    <!-- Button Group on the Left -->
+    <ButtonGroup name="matric" display="tabs">
+        <ButtonGroupItem valueLabel="Global Green India" value="GGCL" default />
+        <ButtonGroupItem valueLabel="Global Green Europe" value="GGE" />
+    </ButtonGroup>
+
+    <!-- Last Updated Text on the Right -->
+    <p class="text-[14px] font-small text-white ml-auto">
+        📅 Last Updated: <Value data={max_date} />
+    </p>
+</div>
 
 <div class="mt-10">
 <DataTable data={plant_1} rows=20 groupBy=plant groupType=section rowshadowing={true} headerFontColor=Bold headerColor=#FFD700>
@@ -54,16 +67,13 @@ SELECT
     ROUND(((CAST(NULLIF(TRIM(cyactual), '') AS DOUBLE) - CAST(NULLIF(TRIM(lyactual), '') AS DOUBLE)) / NULLIF(CAST(NULLIF(TRIM(lyactual), '') AS DOUBLE), 0)) * 100, 2) AS "Growth vs LY %"
 FROM "${inputs.matric}_plantutilization"
 WHERE 
-    (
-        ('${inputs.matric}' = 'GGE' AND month = '${inputs.date_filter.value}') 
-        OR ('${inputs.matric}' = 'GGCL' 
-            AND CAST(SUBSTR(month, 7, 4) || '-' || SUBSTR(month, 4, 2) || '-' || SUBSTR(month, 1, 2) AS DATE) 
-            = CAST('${inputs.date_filter.value}' AS DATE))
-    )
+    month = '${inputs.date_filter.value}'
 AND (
     ('${inputs.matric}' = 'GGE' AND plant = 'Puszta') 
     OR ('${inputs.matric}' = 'GGCL' AND plant = 'OBL')
 );
+
+
 ```
 
 ```sql plant_2
@@ -76,19 +86,18 @@ SELECT
     ROUND((CAST(NULLIF(TRIM(cyactual), '') AS DOUBLE) / NULLIF(CAST(NULLIF(TRIM(cyaop), '') AS DOUBLE), 0)) * 100, 2) AS "ACT vs AOP %",
     ROUND(((CAST(NULLIF(TRIM(cyactual), '') AS DOUBLE) - CAST(NULLIF(TRIM(lyactual), '') AS DOUBLE)) / NULLIF(CAST(NULLIF(TRIM(lyactual), '') AS DOUBLE), 0)) * 100, 2) AS "Growth vs LY %"
 FROM "${inputs.matric}_plantutilization"
-WHERE 
-    (
-        ('${inputs.matric}' = 'GGE' AND month = '${inputs.date_filter.value}') 
-        OR ('${inputs.matric}' = 'GGCL' 
-            AND CAST(SUBSTR(month, 7, 4) || '-' || SUBSTR(month, 4, 2) || '-' || SUBSTR(month, 1, 2) AS DATE) 
-            = CAST('${inputs.date_filter.value}' AS DATE))
-    )
+WHERE  
+    month = '${inputs.date_filter.value}'
 AND (
     ('${inputs.matric}' = 'GGE' AND plant = 'Duna') 
     OR ('${inputs.matric}' = 'GGCL' AND plant = 'VKP')
 );
-```
+``` 
 
+```sql max_date
+SELECT STRFTIME(MAX(STRPTIME(month, '%b-%y')), '%b-%y') AS max_date
+FROM GGCL_plantutilization;
+```
 
 
 

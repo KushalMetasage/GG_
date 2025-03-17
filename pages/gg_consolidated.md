@@ -1,19 +1,42 @@
+<Grid cols = 2>
+
 <div style="position: relative; margin-bottom: 40px;">  
     <h1 style="font-weight: bold; font-size: 30px; margin: 0;">💵 Consolidated Income</h1>
 </div>
 
-<center>
 
-<Dropdown data={date_filter} name=date_filter value=date_filter title="Date" defaultValue="Apr-20">
-    <DropdownOption value="Apr-20" valueLabel="Apr-20" />
+<div>
+<Dropdown data={date_filter} name=date_filter value=date_filter title="Date" defaultValue="Jan-25">
+    <DropdownOption value="Jan-25" valueLabel="Jan-25" />
 </Dropdown>
+</div>
 
-</center>
+</Grid>
 
-<DataTable data={gg_cons} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD"/>
+<div class = "ml-195">
+ <!-- Last Updated Text on the Right -->
+    <p class="text-[14px] font-small text-white ml-auto">
+        📅 Last Updated: <Value data={max_date} />
+    </p>
+</div>
 
-<DataTable data={gg_margins} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700/>
+<DataTable data={gg_cons} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD">
+ <Column id= "particulars" fmt=0/>
+ <Column id= "CY Actual" fmt='0.00'/>
+ <Column id= "CY AOP" fmt='0.00'/>
+ <Column id= "LY Actual" fmt='0.00'/>
+ <Column id= "Variance vs AOP" fmt='0.00'/>
+ <Column id= "Variance vs LY" fmt='0.00'/>
+</DataTable>
 
+<DataTable data={gg_margins} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700>
+<Column id= "particulars" fmt=0/>
+ <Column id= "CY Actual" fmt='0.00'/>
+ <Column id= "CY AOP" fmt='0.00'/>
+ <Column id= "LY Actual" fmt='0.00'/>
+ <Column id= "Variance vs AOP" fmt='0.00'/>
+ <Column id= "Variance vs LY" fmt='0.00'/>
+</DataTable>
 
 ```sql date_filter
 SELECT 
@@ -53,7 +76,8 @@ UnpivotedActual AS (
                 'jan-21', 'feb-21', 'mar-21', 'apr-21', 'may-21', 'jun-21', 'jul-21', 'aug-21', 'sep-21', 'oct-21', 'nov-21', 'dec-21',
                 'jan-22', 'feb-22', 'mar-22', 'apr-22', 'may-22', 'jun-22', 'jul-22', 'aug-22', 'sep-22', 'oct-22', 'nov-22', 'dec-22',
                 'jan-23', 'feb-23', 'mar-23', 'apr-23', 'may-23', 'jun-23', 'jul-23', 'aug-23', 'sep-23', 'oct-23', 'nov-23', 'dec-23',
-                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24'
+                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24',
+                'jan-25'
             ]) AS date_column,
             UNNEST(ARRAY[
                 a."apr-19", a."may-19", a."jun-19", a."jul-19", a."aug-19", a."sep-19", a."oct-19", a."nov-19", a."dec-19",
@@ -61,7 +85,7 @@ UnpivotedActual AS (
                 a."jan-21", a."feb-21", a."mar-21", a."apr-21", a."may-21", a."jun-21", a."jul-21", a."aug-21", a."sep-21", a."oct-21", a."nov-21", a."dec-21",
                 a."jan-22", a."feb-22", a."mar-22", a."apr-22", a."may-22", a."jun-22", a."jul-22", a."aug-22", a."sep-22", a."oct-22", a."nov-22", a."dec-22",
                 a."jan-23", a."feb-23", a."mar-23", a."apr-23", a."may-23", a."jun-23", a."jul-23", a."aug-23", a."sep-23", a."oct-23", a."nov-23", a."dec-23",
-                a."jan-24", a."feb-24", a."mar-24", a."apr-24", a."may-24", a."jun-24", a."jul-24", a."aug-24", a."sep-24", a."oct-24", a."nov-24", a."dec-24"
+                a."jan-24", a."feb-24", a."mar-24", a."apr-24", a."may-24", a."jun-24", a."jul-24", a."aug-24", a."sep-24", a."oct-24", a."nov-24", a."dec-24", a."jan-25"
             ]) AS value
         FROM GGCL_Actual a
         
@@ -75,7 +99,8 @@ UnpivotedActual AS (
                 'jan-21', 'feb-21', 'mar-21', 'apr-21', 'may-21', 'jun-21', 'jul-21', 'aug-21', 'sep-21', 'oct-21', 'nov-21', 'dec-21',
                 'jan-22', 'feb-22', 'mar-22', 'apr-22', 'may-22', 'jun-22', 'jul-22', 'aug-22', 'sep-22', 'oct-22', 'nov-22', 'dec-22',
                 'jan-23', 'feb-23', 'mar-23', 'apr-23', 'may-23', 'jun-23', 'jul-23', 'aug-23', 'sep-23', 'oct-23', 'nov-23', 'dec-23',
-                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24'
+                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24',
+                'jan-25'
             ] ) AS date_column, 
             UNNEST(ARRAY[
                 b."apr-19", b."may-19", b."jun-19", b."jul-19", b."aug-19", b."sep-19", b."oct-19", b."nov-19", b."dec-19",
@@ -83,7 +108,7 @@ UnpivotedActual AS (
                 b."jan-21", b."feb-21", b."mar-21", b."apr-21", b."may-21", b."jun-21", b."jul-21", b."aug-21", b."sep-21", b."oct-21", b."nov-21", b."dec-21",
                 b."jan-22", b."feb-22", b."mar-22", b."apr-22", b."may-22", b."jun-22", b."jul-22", b."aug-22", b."sep-22", b."oct-22", b."nov-22", b."dec-22",
                 b."jan-23", b."feb-23", b."mar-23", b."apr-23", b."may-23", b."jun-23", b."jul-23", b."aug-23", b."sep-23", b."oct-23", b."nov-23", b."dec-23",
-                b."jan-24", b."feb-24", b."mar-24", b."apr-24", b."may-24", b."jun-24", b."jul-24", b."aug-24", b."sep-24", b."oct-24", b."nov-24", b."dec-24"
+                b."jan-24", b."feb-24", b."mar-24", b."apr-24", b."may-24", b."jun-24", b."jul-24", b."aug-24", b."sep-24", b."oct-24", b."nov-24", b."dec-24", b."jan-25"
             ]) AS value
         FROM GGE_Actual b
     ) AS CombinedActual
@@ -105,7 +130,8 @@ UnpivotedAOP AS (
                 'jan-21', 'feb-21', 'mar-21', 'apr-21', 'may-21', 'jun-21', 'jul-21', 'aug-21', 'sep-21', 'oct-21', 'nov-21', 'dec-21',
                 'jan-22', 'feb-22', 'mar-22', 'apr-22', 'may-22', 'jun-22', 'jul-22', 'aug-22', 'sep-22', 'oct-22', 'nov-22', 'dec-22',
                 'jan-23', 'feb-23', 'mar-23', 'apr-23', 'may-23', 'jun-23', 'jul-23', 'aug-23', 'sep-23', 'oct-23', 'nov-23', 'dec-23',
-                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24'
+                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24',
+                'jan-25'
             ]) AS date_column, 
             UNNEST(ARRAY[
                 a."apr-19", a."may-19", a."jun-19", a."jul-19", a."aug-19", a."sep-19", a."oct-19", a."nov-19", a."dec-19",
@@ -113,7 +139,7 @@ UnpivotedAOP AS (
                 a."jan-21", a."feb-21", a."mar-21", a."apr-21", a."may-21", a."jun-21", a."jul-21", a."aug-21", a."sep-21", a."oct-21", a."nov-21", a."dec-21",
                 a."jan-22", a."feb-22", a."mar-22", a."apr-22", a."may-22", a."jun-22", a."jul-22", a."aug-22", a."sep-22", a."oct-22", a."nov-22", a."dec-22",
                 a."jan-23", a."feb-23", a."mar-23", a."apr-23", a."may-23", a."jun-23", a."jul-23", a."aug-23", a."sep-23", a."oct-23", a."nov-23", a."dec-23",
-                a."jan-24", a."feb-24", a."mar-24", a."apr-24", a."may-24", a."jun-24", a."jul-24", a."aug-24", a."sep-24", a."oct-24", a."nov-24", a."dec-24"
+                a."jan-24", a."feb-24", a."mar-24", a."apr-24", a."may-24", a."jun-24", a."jul-24", a."aug-24", a."sep-24", a."oct-24", a."nov-24", a."dec-24", a."jan-25"
             ]) AS value
         FROM GGCL_AOP a
         
@@ -127,7 +153,8 @@ UnpivotedAOP AS (
                 'jan-21', 'feb-21', 'mar-21', 'apr-21', 'may-21', 'jun-21', 'jul-21', 'aug-21', 'sep-21', 'oct-21', 'nov-21', 'dec-21',
                 'jan-22', 'feb-22', 'mar-22', 'apr-22', 'may-22', 'jun-22', 'jul-22', 'aug-22', 'sep-22', 'oct-22', 'nov-22', 'dec-22',
                 'jan-23', 'feb-23', 'mar-23', 'apr-23', 'may-23', 'jun-23', 'jul-23', 'aug-23', 'sep-23', 'oct-23', 'nov-23', 'dec-23',
-                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24'
+                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24',
+                'jan-25'
             ]) AS date_column, 
             UNNEST(ARRAY[
                 b."apr-19", b."may-19", b."jun-19", b."jul-19", b."aug-19", b."sep-19", b."oct-19", b."nov-19", b."dec-19",
@@ -135,7 +162,7 @@ UnpivotedAOP AS (
                 b."jan-21", b."feb-21", b."mar-21", b."apr-21", b."may-21", b."jun-21", b."jul-21", b."aug-21", b."sep-21", b."oct-21", b."nov-21", b."dec-21",
                 b."jan-22", b."feb-22", b."mar-22", b."apr-22", b."may-22", b."jun-22", b."jul-22", b."aug-22", b."sep-22", b."oct-22", b."nov-22", b."dec-22",
                 b."jan-23", b."feb-23", b."mar-23", b."apr-23", b."may-23", b."jun-23", b."jul-23", b."aug-23", b."sep-23", b."oct-23", b."nov-23", b."dec-23",
-                b."jan-24", b."feb-24", b."mar-24", b."apr-24", b."may-24", b."jun-24", b."jul-24", b."aug-24", b."sep-24", b."oct-24", b."nov-24", b."dec-24"
+                b."jan-24", b."feb-24", b."mar-24", b."apr-24", b."may-24", b."jun-24", b."jul-24", b."aug-24", b."sep-24", b."oct-24", b."nov-24", b."dec-24", b."jan-25"
             ]) AS value
         FROM GGE_AOP b
     ) AS CombinedAOP
@@ -201,7 +228,8 @@ UnpivotedActual AS (
                 'jan-21', 'feb-21', 'mar-21', 'apr-21', 'may-21', 'jun-21', 'jul-21', 'aug-21', 'sep-21', 'oct-21', 'nov-21', 'dec-21',
                 'jan-22', 'feb-22', 'mar-22', 'apr-22', 'may-22', 'jun-22', 'jul-22', 'aug-22', 'sep-22', 'oct-22', 'nov-22', 'dec-22',
                 'jan-23', 'feb-23', 'mar-23', 'apr-23', 'may-23', 'jun-23', 'jul-23', 'aug-23', 'sep-23', 'oct-23', 'nov-23', 'dec-23',
-                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24'
+                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24',
+                'jan-25'
             ]) AS date_column,
             UNNEST(ARRAY[
                 a."apr-19", a."may-19", a."jun-19", a."jul-19", a."aug-19", a."sep-19", a."oct-19", a."nov-19", a."dec-19",
@@ -209,7 +237,7 @@ UnpivotedActual AS (
                 a."jan-21", a."feb-21", a."mar-21", a."apr-21", a."may-21", a."jun-21", a."jul-21", a."aug-21", a."sep-21", a."oct-21", a."nov-21", a."dec-21",
                 a."jan-22", a."feb-22", a."mar-22", a."apr-22", a."may-22", a."jun-22", a."jul-22", a."aug-22", a."sep-22", a."oct-22", a."nov-22", a."dec-22",
                 a."jan-23", a."feb-23", a."mar-23", a."apr-23", a."may-23", a."jun-23", a."jul-23", a."aug-23", a."sep-23", a."oct-23", a."nov-23", a."dec-23",
-                a."jan-24", a."feb-24", a."mar-24", a."apr-24", a."may-24", a."jun-24", a."jul-24", a."aug-24", a."sep-24", a."oct-24", a."nov-24", a."dec-24"
+                a."jan-24", a."feb-24", a."mar-24", a."apr-24", a."may-24", a."jun-24", a."jul-24", a."aug-24", a."sep-24", a."oct-24", a."nov-24", a."dec-24", a."jan-25"
             ]) AS value
         FROM GGCL_Actual a
         
@@ -223,7 +251,8 @@ UnpivotedActual AS (
                 'jan-21', 'feb-21', 'mar-21', 'apr-21', 'may-21', 'jun-21', 'jul-21', 'aug-21', 'sep-21', 'oct-21', 'nov-21', 'dec-21',
                 'jan-22', 'feb-22', 'mar-22', 'apr-22', 'may-22', 'jun-22', 'jul-22', 'aug-22', 'sep-22', 'oct-22', 'nov-22', 'dec-22',
                 'jan-23', 'feb-23', 'mar-23', 'apr-23', 'may-23', 'jun-23', 'jul-23', 'aug-23', 'sep-23', 'oct-23', 'nov-23', 'dec-23',
-                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24'
+                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24',
+                'jan-25'
             ] ) AS date_column, 
             UNNEST(ARRAY[
                 b."apr-19", b."may-19", b."jun-19", b."jul-19", b."aug-19", b."sep-19", b."oct-19", b."nov-19", b."dec-19",
@@ -231,7 +260,7 @@ UnpivotedActual AS (
                 b."jan-21", b."feb-21", b."mar-21", b."apr-21", b."may-21", b."jun-21", b."jul-21", b."aug-21", b."sep-21", b."oct-21", b."nov-21", b."dec-21",
                 b."jan-22", b."feb-22", b."mar-22", b."apr-22", b."may-22", b."jun-22", b."jul-22", b."aug-22", b."sep-22", b."oct-22", b."nov-22", b."dec-22",
                 b."jan-23", b."feb-23", b."mar-23", b."apr-23", b."may-23", b."jun-23", b."jul-23", b."aug-23", b."sep-23", b."oct-23", b."nov-23", b."dec-23",
-                b."jan-24", b."feb-24", b."mar-24", b."apr-24", b."may-24", b."jun-24", b."jul-24", b."aug-24", b."sep-24", b."oct-24", b."nov-24", b."dec-24"
+                b."jan-24", b."feb-24", b."mar-24", b."apr-24", b."may-24", b."jun-24", b."jul-24", b."aug-24", b."sep-24", b."oct-24", b."nov-24", b."dec-24", b."jan-25"
             ]) AS value
         FROM GGE_Actual b
     ) AS CombinedActual
@@ -253,7 +282,8 @@ UnpivotedAOP AS (
                 'jan-21', 'feb-21', 'mar-21', 'apr-21', 'may-21', 'jun-21', 'jul-21', 'aug-21', 'sep-21', 'oct-21', 'nov-21', 'dec-21',
                 'jan-22', 'feb-22', 'mar-22', 'apr-22', 'may-22', 'jun-22', 'jul-22', 'aug-22', 'sep-22', 'oct-22', 'nov-22', 'dec-22',
                 'jan-23', 'feb-23', 'mar-23', 'apr-23', 'may-23', 'jun-23', 'jul-23', 'aug-23', 'sep-23', 'oct-23', 'nov-23', 'dec-23',
-                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24'
+                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24',
+                'jan-25'
             ]) AS date_column, 
             UNNEST(ARRAY[
                 a."apr-19", a."may-19", a."jun-19", a."jul-19", a."aug-19", a."sep-19", a."oct-19", a."nov-19", a."dec-19",
@@ -261,7 +291,7 @@ UnpivotedAOP AS (
                 a."jan-21", a."feb-21", a."mar-21", a."apr-21", a."may-21", a."jun-21", a."jul-21", a."aug-21", a."sep-21", a."oct-21", a."nov-21", a."dec-21",
                 a."jan-22", a."feb-22", a."mar-22", a."apr-22", a."may-22", a."jun-22", a."jul-22", a."aug-22", a."sep-22", a."oct-22", a."nov-22", a."dec-22",
                 a."jan-23", a."feb-23", a."mar-23", a."apr-23", a."may-23", a."jun-23", a."jul-23", a."aug-23", a."sep-23", a."oct-23", a."nov-23", a."dec-23",
-                a."jan-24", a."feb-24", a."mar-24", a."apr-24", a."may-24", a."jun-24", a."jul-24", a."aug-24", a."sep-24", a."oct-24", a."nov-24", a."dec-24"
+                a."jan-24", a."feb-24", a."mar-24", a."apr-24", a."may-24", a."jun-24", a."jul-24", a."aug-24", a."sep-24", a."oct-24", a."nov-24", a."dec-24", a."jan-25"
             ]) AS value
         FROM GGCL_AOP a
         
@@ -275,7 +305,8 @@ UnpivotedAOP AS (
                 'jan-21', 'feb-21', 'mar-21', 'apr-21', 'may-21', 'jun-21', 'jul-21', 'aug-21', 'sep-21', 'oct-21', 'nov-21', 'dec-21',
                 'jan-22', 'feb-22', 'mar-22', 'apr-22', 'may-22', 'jun-22', 'jul-22', 'aug-22', 'sep-22', 'oct-22', 'nov-22', 'dec-22',
                 'jan-23', 'feb-23', 'mar-23', 'apr-23', 'may-23', 'jun-23', 'jul-23', 'aug-23', 'sep-23', 'oct-23', 'nov-23', 'dec-23',
-                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24'
+                'jan-24', 'feb-24', 'mar-24', 'apr-24', 'may-24', 'jun-24', 'jul-24', 'aug-24', 'sep-24', 'oct-24', 'nov-24', 'dec-24',
+                'jan-25'
             ]) AS date_column, 
             UNNEST(ARRAY[
                 b."apr-19", b."may-19", b."jun-19", b."jul-19", b."aug-19", b."sep-19", b."oct-19", b."nov-19", b."dec-19",
@@ -283,7 +314,7 @@ UnpivotedAOP AS (
                 b."jan-21", b."feb-21", b."mar-21", b."apr-21", b."may-21", b."jun-21", b."jul-21", b."aug-21", b."sep-21", b."oct-21", b."nov-21", b."dec-21",
                 b."jan-22", b."feb-22", b."mar-22", b."apr-22", b."may-22", b."jun-22", b."jul-22", b."aug-22", b."sep-22", b."oct-22", b."nov-22", b."dec-22",
                 b."jan-23", b."feb-23", b."mar-23", b."apr-23", b."may-23", b."jun-23", b."jul-23", b."aug-23", b."sep-23", b."oct-23", b."nov-23", b."dec-23",
-                b."jan-24", b."feb-24", b."mar-24", b."apr-24", b."may-24", b."jun-24", b."jul-24", b."aug-24", b."sep-24", b."oct-24", b."nov-24", b."dec-24"
+                b."jan-24", b."feb-24", b."mar-24", b."apr-24", b."may-24", b."jun-24", b."jul-24", b."aug-24", b."sep-24", b."oct-24", b."nov-24", b."dec-24", b."jan-25"
             ]) AS value
         FROM GGE_AOP b
     ) AS CombinedAOP
@@ -303,11 +334,11 @@ LY_Actual AS (
 
 SELECT 
     ua.particulars,
-    SUM(ua.CY_Actual) AS "CY Actual",
-    SUM(COALESCE(uAOP.CY_AOP, 0)) AS "CY AOP",
-    SUM(COALESCE(ly.LY_Actual, 0)) AS "LY Actual",
-    SUM(ua.CY_Actual - COALESCE(uAOP.CY_AOP, 0)) AS "Variance vs AOP",
-    SUM(ua.CY_Actual - COALESCE(ly.LY_Actual, 0)) AS "Variance vs LY"
+    SUM(ua.CY_Actual) * 100 AS "CY Actual",
+    SUM(COALESCE(uAOP.CY_AOP, 0)) * 100 AS "CY AOP",
+    SUM(COALESCE(ly.LY_Actual, 0)) * 100 AS "LY Actual",
+    SUM(ua.CY_Actual - COALESCE(uAOP.CY_AOP, 0)) * 100 AS "Variance vs AOP",
+    SUM(ua.CY_Actual - COALESCE(ly.LY_Actual, 0)) * 100 AS "Variance vs LY"
 FROM UnpivotedActual ua
 LEFT JOIN UnpivotedAOP uAOP 
     ON ua.particulars = uAOP.particulars AND ua.date_column = uAOP.date_column
@@ -316,5 +347,15 @@ LEFT JOIN LY_Actual ly
 WHERE ua.date_column = (SELECT selected_month_year FROM SelectedDate)
 AND ua.particulars IN ('GROSS %', 'EBITDA %', 'EBT %', 'EBIT %')
 GROUP BY ua.particulars;
+```
 
+```sql max_date
+SELECT STRFTIME(MAX(STRPTIME(date_filter, '%b-%y')), '%b-%y') AS max_date
+FROM (
+    SELECT 
+        UPPER(LEFT(column_name, 1)) || SUBSTRING(column_name FROM 2) AS date_filter
+    FROM information_schema.columns
+    WHERE table_name = 'GGE_Actual'
+    AND column_name NOT IN ('particulars', 'sno') -- Exclude non-date columns
+) AS subquery;
 ```

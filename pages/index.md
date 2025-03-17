@@ -3,7 +3,7 @@
   <img src="https://globalgreengroup.com/wp-content/uploads/2015/07/logo.png" 
        alt="Global Green" 
        class="w-[250px] md:w-[300px] mb-6 rounded-lg shadow-md transition-transform duration-300 hover:scale-105" />
-
+  
   <!-- Text Section -->
   <div class="text-center max-w-2xl">
     <h1 class="text-5xl font-extrabold text-green-700 mb-4 tracking-wide">
@@ -18,3 +18,15 @@
 
   </div>
 </div>
+
+<div class="ml-52 mt-10">
+    <p class="text-justify text-[17px]">
+        The <span class="text-blue-500">MMR Dashboard</span> delivers  
+        <span class="text-green-600">real-time financial insights</span>, enhancing reporting efficiency and simplifying  
+        the tracking of key metrics. By providing accurate, up-to-date data, it supports  
+        informed decision-making, driving improved business performance.
+    </p>
+</div>
+
+
+

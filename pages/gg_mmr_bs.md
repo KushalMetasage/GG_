@@ -1,24 +1,38 @@
+<Grid cols = 2>
+ 
+
 
 <div style="position: relative; margin-bottom: 40px;">  
+    
     <h1 style="font-weight: bold; font-size: 30px; margin: 0;">📊 Balance Sheet</h1>
 </div>
 
-<center>
-<Dropdown data={date_filter} name=date_filter value=date_filter title="Date" defaultValue="Apr-21">
-    <DropdownOption value="Apr-21" valueLabel="Apr-21" />
+<div class>
+
+<Dropdown data={date_filter} name=date_filter value=date_filter title="Start" defaultValue="Dec-24">
+    <DropdownOption value="Dec-24" valueLabel="Dec-24" />
 </Dropdown>
 
-<Dropdown data={date_filter_1} name=date_filter_1 value=date_filter_1 title="Date" defaultValue="Apr-21">
-    <DropdownOption value="Apr-21" valueLabel="Apr-21" />
+<Dropdown data={date_filter_1} name=date_filter_1 value=date_filter_1 title="End" defaultValue="Dec-23">
+    <DropdownOption value="Dec-23" valueLabel="Dec-23" />
 </Dropdown>
 
+</div>
 
-</center>
+</Grid>
 
-<ButtonGroup name="matric" display="tabs">
-    <ButtonGroupItem valueLabel="Global Green India" value="GGCL" default />
-    <ButtonGroupItem valueLabel="Global Green Europe" value="GGE" />
-</ButtonGroup>
+<div class="flex items-center justify-between w-full">
+    <!-- Button Group on the Left -->
+    <ButtonGroup name="matric" display="tabs">
+        <ButtonGroupItem valueLabel="Global Green India" value="GGCL" default />
+        <ButtonGroupItem valueLabel="Global Green Europe" value="GGE" />
+    </ButtonGroup>
+
+    <!-- Last Updated Text on the Right -->
+    <p class="text-[14px] font-small text-white ml-auto">
+        📅 Last Updated: <Value data={max_date} />
+    </p>
+</div>
 
 <div class="bg-gray-800 text-white p-6 shadow-lg rounded-lg mb-10">
     <!-- Display Comments Dynamically -->
@@ -43,7 +57,6 @@
     rowshadowing={true}
     headerFontColor=Bold
     headerColor=#FFD700
-    totalRowColor=#FFCBA4
     title = "Values are in Million USD">
 
    <Column id="subcategory" 
@@ -126,18 +139,34 @@ ORDER BY subcategory, particulars;
 SELECT 
     UPPER(LEFT(column_name, 1)) || LOWER(SUBSTRING(column_name FROM 2)) AS date_filter
 FROM information_schema.columns
-WHERE table_name = 'GGE_BS'  
+WHERE table_name = '${inputs.matric}_BS'  
 AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
 ORDER BY column_name;
 ```
 
 ```sql date_filter_1
+WITH AvailableDates AS (
+    SELECT column_name 
+    FROM information_schema.columns 
+    WHERE table_name = '${inputs.matric}_BS'  
+    AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
+),
+SelectedDate AS (
+    SELECT 
+        COALESCE('${inputs.date_filter.value}', 
+            (SELECT MAX(column_name) FROM AvailableDates)
+        ) AS selected_date
+), 
+PreviousYear AS (
+    SELECT 
+        selected_date,
+        LEFT(selected_date, 3) || '-' || CAST(CAST(RIGHT(selected_date, 2) AS INTEGER) - 1 AS TEXT) AS previous_date
+    FROM SelectedDate
+)
 SELECT 
-    UPPER(LEFT(column_name, 1)) || LOWER(SUBSTRING(column_name FROM 2)) AS date_filter_1
-FROM information_schema.columns
-WHERE table_name = 'GGE_BS'  
-AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
-ORDER BY column_name;
+    selected_date AS date_filter,
+    UPPER(LEFT(previous_date, 1)) || LOWER(SUBSTRING(previous_date FROM 2)) AS date_filter_1
+FROM PreviousYear;
 ```
 
 
@@ -146,4 +175,48 @@ SELECT DISTINCT global_green_india, global_green_europe
 FROM Supabase.GG_BS_comment 
 ```
 
+```sql max_date
+SELECT STRFTIME(MAX(STRPTIME(date_filter, '%b-%y')), '%b-%y') AS max_date
+FROM (
+    SELECT 
+        UPPER(LEFT(column_name, 1)) || SUBSTRING(column_name FROM 2) AS date_filter
+    FROM information_schema.columns
+    WHERE table_name = '${inputs.matric}_BS'
+    AND column_name NOT IN ('category', 'sno', 'no', 'subcategory', 'particulars') -- Exclude non-date columns
+) AS subquery;
+```
+
+```sql test
+WITH AvailableDates AS (
+    SELECT column_name 
+    FROM information_schema.columns 
+    WHERE table_name = '${inputs.matric}_BS'  
+    AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
+),
+
+SelectedDate AS (
+    SELECT 
+        '${inputs.date_filter.value}' AS selected_date,
+        -- Compute previous year date dynamically (e.g., Aug-23 → Aug-22)
+        LEFT('${inputs.date_filter.value}', 3) || '-' || 
+        CAST(CAST(RIGHT('${inputs.date_filter.value}', 2) AS INTEGER) - 1 AS TEXT) 
+        AS previous_year_date
+),
+
+Validation AS (
+    SELECT 
+        s.selected_date,
+        s.previous_year_date,
+        CASE 
+            WHEN NOT EXISTS (
+                SELECT 1 FROM AvailableDates WHERE column_name = s.previous_year_date
+            ) 
+            THEN 'Invalid Date for ' || s.previous_year_date
+            ELSE NULL 
+        END AS error_message
+    FROM SelectedDate s
+)
+
+SELECT * FROM Validation;
+```
 

@@ -1,18 +1,38 @@
+<Grid cols = 2>
+
 <div style="position: relative; margin-bottom: 40px;">  
     <h1 style="font-weight: bold; font-size: 30px; margin: 0;">🏦 YTD Income Statement</h1>
 </div>
 
-<center>
-<Dropdown data={date_filter} name=date_filter value=date_filter title="Date" defaultValue="Apr-19 to Mar-20">
+<div>
+<Dropdown data={date_filter} name=date_filter value=date_filter title="Fiscal Year" defaultValue="Apr-23 to Mar-24">
 </Dropdown>
-</center>
+</div>
 
-<ButtonGroup name="matric" display="tabs">
-    <ButtonGroupItem valueLabel="Global Green India" value="GGCL" default />
-    <ButtonGroupItem valueLabel="Global Green Europe" value="GGE" />
-</ButtonGroup>
+</Grid>
 
-<DataTable data={ytd} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD"/>
+<div class="flex items-center justify-between w-full">
+    <!-- Button Group on the Left -->
+    <ButtonGroup name="matric" display="tabs">
+        <ButtonGroupItem valueLabel="Global Green India" value="GGCL" default />
+        <ButtonGroupItem valueLabel="Global Green Europe" value="GGE" />
+    </ButtonGroup>
+
+    <!-- Last Updated Text on the Right -->
+    <p class="text-[14px] font-small text-white ml-auto">
+        📅 Last Updated: <Value data={max_date} />
+    </p>
+</div>
+
+<DataTable data={ytd} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD">
+<Column id= "fiscal_year" fmt=0/>
+<Column id= "metric_name" fmt=0/>
+<Column id= "CY Actual" fmt='0.00'/>
+<Column id= "YTD AOP" fmt='0.00'/>
+<Column id= "LY Actual YTD" fmt='0.00'/>
+<Column id= "Variance vs AOP YTD" fmt='0.00'/>
+<Column id= "Variance vs LY YTD" fmt='0.00'/>
+</DataTable>
 
 ```sql date_filter
     WITH FiscalYears AS (
@@ -277,6 +297,31 @@ FROM '${inputs.matric}_Actual' A
 JOIN '${inputs.matric}_Aop' B USING ("Particulars")
 WHERE '${inputs.date_filter.value}' = 'Apr-23 to Mar-24'
 
+```
 
+```sql max_date
+SELECT STRFTIME(MAX(STRPTIME(date_filter, '%b-%y')), '%b-%y') AS max_date
+FROM (
+    SELECT 
+        UPPER(LEFT(column_name, 1)) || SUBSTRING(column_name FROM 2) AS date_filter
+    FROM information_schema.columns
+    WHERE table_name = 'GGCL_Actual'
+    AND column_name NOT IN ('category', 'sno', 'no', 'subcategory', 'particulars') -- Exclude non-date columns
+) AS subquery;
+```
+
+```sql max_date
+WITH FiscalYears AS (
+    SELECT DISTINCT 
+        'Apr-' || RIGHT(column_name, 2) || ' to Mar-' || 
+        LPAD(CAST(RIGHT(column_name, 2)::INTEGER + 1 AS TEXT), 2, '0') AS date_filter,
+        RIGHT(column_name, 2)::INTEGER AS fiscal_year  -- Extract the numeric year for sorting
+    FROM information_schema.columns
+    WHERE table_name = 'GGCL_Actual'  
+    AND column_name LIKE 'apr-%'  
+    AND RIGHT(column_name, 2)::INTEGER < 24  -- Ensures only valid fiscal years
+)
+SELECT 'Mar-' || LPAD(CAST(MAX(fiscal_year + 1) AS TEXT), 2, '0') AS max_date
+FROM FiscalYears;
 
 ```
