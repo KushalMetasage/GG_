@@ -1,5 +1,5 @@
-<div class="relative mb-10">  
-    <h1 class="text-lg m-0">📈 Business Comments</h1>
+<div class="relative mb-10 mt-3">  
+    <h1 class="text-lg m-0 font-bold">📈 Business Comments</h1>
 </div>
 
 

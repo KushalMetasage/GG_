@@ -1,13 +1,13 @@
-<Grid cols = 2>
+<Grid cols = 3>
  
 
 
-<div class="relative">  
+<div class="relative font-bold mt-3">  
     <h1 class="text-lg m-0">📊 Balance Sheet</h1>
 </div>
 
 
-<div class>
+<div class = "relative relative mb-5 mt-1">
 
 <Dropdown data={date_filter} name=date_filter value=date_filter title="Start" defaultValue="Dec-24" order="date_sort desc">
     <DropdownOption value="Dec-24" valueLabel="Dec-24" />
@@ -19,6 +19,12 @@
 
 </div>
 
+<div class= "relative mt-5 ml-30">
+<!-- Last Updated Text on the Right -->
+    <p class="text-sm text-grey ml-auto">
+        📅 Last Updated: <Value data={max_date} />
+    </p>
+</div>
 </Grid>
 
 <div class="flex items-center justify-between w-full">
@@ -28,10 +34,6 @@
         <ButtonGroupItem valueLabel="Global Green Europe" value="GGE" />
     </ButtonGroup>
 
-    <!-- Last Updated Text on the Right -->
-    <p class="text-sm text-grey ml-auto">
-        📅 Last Updated: <Value data={max_date} />
-    </p>
 </div>
 
 <div class="bg-gray-800 text-white p-6 shadow-lg rounded-lg mb-10">
@@ -57,7 +59,7 @@
     rowshadowing={true}
     headerFontColor=Bold
     headerColor=#FFD700
-    title = "Values are in Million USD">
+    title = "Values are in Million USD ($)">
 
    <Column id="subcategory" 
         name="Sub-Category"  

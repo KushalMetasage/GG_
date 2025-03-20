@@ -1,28 +1,35 @@
 
-<Grid cols = 2>
-
-<div class="relative">  
-    <h1 class="text-lg m-0">💵 Consolidated Income</h1>
-</div>
 
 
 
-<div class="relative">
+
+<Grid cols = 3>
+
+<!-- <div class="relative mt-3">  
+    <h1 class="text-lg m-0 font-bold">💵 Consolidated Income</h1>
+</div> -->
+
+## 💵 Consolidated Income
+
+
+<div class="relative ml-25 mb-5 mt-1">
 <Dropdown data={date_filter} name=date_filter value=date_filter title="Date" defaultValue="Jan-25" order = "date_sort desc">
     <DropdownOption value="Jan-25" valueLabel="Jan-25" />
 </Dropdown>
 </div>
 
-</Grid>
-
-<div class = "ml-195">
+<div class = "relative mt-5 ml-30">
  <!-- Last Updated Text on the Right -->
     <p class="text-sm text-grey ml-auto">
         📅 Last Updated: <Value data={max_date} />
     </p>
 </div>
 
-<DataTable data={gg_cons} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD">
+</Grid>
+
+
+
+<DataTable data={gg_cons} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD ($)">
  <Column id= "particulars" fmt=0/>
  <Column id= "CY Actual" fmt='$0.00' align="center"/>
  <Column id= "CY AOP" fmt='$0.00' align="center"/>
@@ -33,21 +40,24 @@
 
 <DataTable data={gg_margins_cons} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700>
 <Column id= "particulars" fmt=0/>
- <Column id= "CY Actual" fmt='0.00' align="center"/>
- <Column id= "CY AOP" fmt='0.00' align="center"/>
- <Column id= "LY Actual" fmt='0.00' align="center"/>
- <Column id= "Variance vs AOP" fmt='0.00' align="center"/>
- <Column id= "Variance vs LY" fmt='0.00' align="center"/>
+ <Column id= "CY Actual" fmt='0.00"%"' align="center"/>
+ <Column id= "CY AOP" fmt='0.00"%"' align="center"/>
+ <Column id= "LY Actual" fmt='0.00"%"' align="center"/>
+ <Column id= "Variance vs AOP" fmt='0.00"%"' align="center"/>
+ <Column id= "Variance vs LY" fmt='0.00"%"' align="center"/>
 </DataTable>
 
-<Grid cols = 2>
+<Grid cols = 3>
 
-<div class="relative mt-20">  
-    <h1 class="text-lg m-0">💵 Income Statement</h1>
+<!-- <div class="relative mt-20">  
+    <h1 class="text-lg m-0 font-bold">💵 Income Statement</h1>
 </div>
+ -->
 
 
-<div class = "relative mt-17">
+ ## 💵 Income Statement
+
+<div class = "relative mt-1 ml-25">
 
 <Dropdown data={date_filter_inc} name=date_filter_inc value=date_filter_inc title="Date" defaultValue="Jan-25" order = "date_sort desc">
     <DropdownOption value="Jan-25" valueLabel="Jan-25" />
@@ -55,6 +65,12 @@
 
 </div>
 
+<div class = "relative mt-4 ml-30">
+ <!-- Last Updated Text on the Right -->
+    <p class="text-sm text-grey ml-auto">
+        📅 Last Updated: <Value data={max_date} />
+    </p>
+</div>
 </Grid>
 
 <div class="flex items-center justify-between w-full">
@@ -64,13 +80,9 @@
         <ButtonGroupItem valueLabel="Global Green Europe" value="GGE" />
     </ButtonGroup>
 
-    <!-- Last Updated Text on the Right -->
-    <p class="text-sm text-grey ml-auto">
-        📅 Last Updated: <Value data={max_date} />
-    </p>
 </div>
 
-<DataTable data={gg_data} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD">
+<DataTable data={gg_data} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD ($)">
  <Column id= "particulars" fmt=0/>
  <Column id= "CY Actual" fmt='$0.00' align="center"/>
  <Column id= "CY AOP" fmt='$0.00' align="center"/>
@@ -83,24 +95,33 @@
 
 <DataTable data={gg_margins} rowshadowing={true} headerFontColor=Bold headerColor=#FFD700>
  <Column id= "particulars" fmt=0 />
- <Column id= "CY Actual" fmt='0.00' align="center"/>
- <Column id= "CY AOP" fmt='0.00' align="center"/>
- <Column id= "LY Actual" fmt='0.00' align="center"/>
- <Column id= "Variance vs AOP" fmt='0.00' align="center"/>
- <Column id= "Variance vs LY" fmt='0.00' align="center"/>
+ <Column id= "CY Actual" fmt='0.00"%"' align="center"/>
+ <Column id= "CY AOP" fmt='0.00"%"' align="center"/>
+ <Column id= "LY Actual" fmt='0.00"%"' align="center"/>
+ <Column id= "Variance vs AOP" fmt='0.00"%"' align="center"/>
+ <Column id= "Variance vs LY" fmt='0.00"%"' align="center"/>
 </DataTable>
 
-<Grid cols = 2>
+<Grid cols = 3>
 
-<div class="relative mt-20">  
-    <h1 class="text-lg m-0">🏦 YTD Income Statement</h1>
-</div>
+<!-- <div class="relative mt-20">  
+    <h1 class="text-lg m-0 font-bold">🏦 YTD Income Statement</h1>
+</div> -->
+
+## 🏦 YTD Income Statement
 
 
-<div class="relative mt-17">
-<Dropdown data={date_filter_ytd} name=date_filter_ytd value=date_filter_ytd title="Year" defaultValue="2024" order = "date_sort desc">
+<div class="relative ml-25 mt-1">
+<Dropdown data={date_filter_ytd} name=date_filter_ytd value=date_filter_ytd title="Year" defaultValue="2025" order = "date_sort desc">
 </Dropdown>
 <Info description="For the year 2019 data is from Apr-19 to Dec-19" color="red" />
+</div>
+
+<div class = "relative mt-4 ml-30">
+ <!-- Last Updated Text on the Right -->
+    <p class="text-sm text-grey ml-auto">
+        📅 Last Updated: <Value data={max_date_ytd} />
+    </p>
 </div>
 
 </Grid>
@@ -112,14 +133,9 @@
         <ButtonGroupItem valueLabel="Global Green India" value="GGCL" default />
         <ButtonGroupItem valueLabel="Global Green Europe" value="GGE" />
     </ButtonGroup>
-
-    <!-- Last Updated Text on the Right -->
-    <p class="text-sm text-grey ml-auto">
-        📅 Last Updated: <Value data={max_date_ytd} />
-    </p>
 </div>
 
-<DataTable data={ytd} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD">
+<DataTable data={ytd} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title = "Values are in Million USD ($)">
 <Column id= "particulars" fmt=0 />
 <Column id= "CY Actual" fmt='$0.00' align="center"/>
 <Column id= "YTD AOP" fmt='$0.00' align="center"/>
@@ -130,11 +146,11 @@
 
 <DataTable data={ytd_margins} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700>
 <Column id= "particulars" fmt=0 />
-<Column id= "CY Actual" fmt='0.00' align="center"/>
-<Column id= "YTD AOP" fmt='0.00' align="center"/>
-<Column id= "LY Actual YTD" fmt='0.00' align="center"/>
-<Column id= "Variance vs AOP YTD" fmt='0.00' align="center"/>
-<Column id= "Variance vs LY YTD" fmt='0.00' align="center"/>
+<Column id= "CY Actual" fmt='0.00"%"' align="center"/>
+<Column id= "YTD AOP" fmt='0.00"%"' align="center"/>
+<Column id= "LY Actual YTD" fmt='0.00"%"' align="center"/>
+<Column id= "Variance vs AOP YTD" fmt='0.00"%"' align="center"/>
+<Column id= "Variance vs LY YTD" fmt='0.00"%"' align="center"/>
 </DataTable>
 
 
@@ -666,7 +682,7 @@ WITH CalendarYears AS (
     WHERE table_name = 'GGCL_Actual'  
     AND (column_name LIKE 'jan-%' OR column_name LIKE 'apr-19')  -- Include 'apr-19' for the special case
     AND RIGHT(column_name, 2) ~ '^[0-9]+$'  -- Ensure only numeric years are processed
-    AND RIGHT(column_name, 2)::INTEGER <= 24  -- Ensures only valid years
+    AND RIGHT(column_name, 2)::INTEGER   -- Ensures only valid years
 )
 SELECT year_label AS date_filter_ytd, date_sort  -- Use year as the final label
 FROM CalendarYears 
@@ -1074,6 +1090,43 @@ AND NOT (
         COALESCE(A."oct-24", 0) + COALESCE(A."nov-24", 0) + COALESCE(A."dec-24", 0)
     ) = 0 
 )
+
+UNION ALL
+
+SELECT 
+  A.sno, 
+  'Jan-25' AS YTD,
+  A.particulars AS particulars,
+
+  -- CY Actual (Jan-25)
+  COALESCE(A."jan-25", 0) AS "CY Actual",
+
+  -- YTD AOP (Jan-25)
+  COALESCE(B."jan-25", 0) AS "YTD AOP",
+
+  -- LY Actual YTD (Jan-24)
+  (SELECT COALESCE(A_prev."jan-24", 0) 
+   FROM GGCL_Actual A_prev
+   WHERE A_prev.particulars = A.particulars) AS "LY Actual YTD",
+
+  -- Variance vs AOP YTD (CY Actual - YTD AOP) for Jan-25
+  (COALESCE(A."jan-25", 0) - COALESCE(B."jan-25", 0)) AS "Variance vs AOP YTD",
+
+  -- Variance vs LY YTD (CY Actual - LY Actual YTD) for Jan-25
+  (COALESCE(A."jan-25", 0) - 
+    (SELECT COALESCE(A_prev."jan-24", 0) 
+     FROM GGCL_Actual A_prev
+     WHERE A_prev.particulars = A.particulars)) AS "Variance vs LY YTD"
+
+FROM '${inputs.matric_ytd}_Actual' A
+JOIN '${inputs.matric_ytd}_Aop' B USING ("Particulars")
+WHERE '${inputs.date_filter_ytd.value}' = '2025'
+AND A.particulars NOT IN ('GROSS %', 'EBITDA %', 'EBT %', 'EBIT %')
+AND NOT (
+    TRIM(A.particulars) = ''
+        AND (COALESCE(A."jan-25", 0)) = 0
+)
+
 ORDER BY A.sno ASC;
 ```
 
@@ -1423,6 +1476,43 @@ FROM '${inputs.matric_ytd}_Actual' A
 JOIN '${inputs.matric_ytd}_Aop' B USING ("Particulars")
 WHERE '${inputs.date_filter_ytd.value}' = '2024'
 AND A.particulars IN ('GROSS %', 'EBITDA %', 'EBT %', 'EBIT %')
+
+UNION ALL
+
+SELECT 
+  A.sno, 
+  'Jan-25' AS YTD,
+  A.particulars AS particulars,
+
+  -- CY Actual (Jan-25)
+  COALESCE(A."jan-25", 0) AS "CY Actual",
+
+  -- YTD AOP (Jan-25)
+  COALESCE(B."jan-25", 0) AS "YTD AOP",
+
+  -- LY Actual YTD (Jan-24)
+  (SELECT COALESCE(A_prev."jan-24", 0) 
+   FROM GGCL_Actual A_prev
+   WHERE A_prev.particulars = A.particulars) AS "LY Actual YTD",
+
+  -- Variance vs AOP YTD (CY Actual - YTD AOP) for Jan-25
+  (COALESCE(A."jan-25", 0) - COALESCE(B."jan-25", 0)) AS "Variance vs AOP YTD",
+
+  -- Variance vs LY YTD (CY Actual - LY Actual YTD) for Jan-25
+  (COALESCE(A."jan-25", 0) - 
+    (SELECT COALESCE(A_prev."jan-24", 0) 
+     FROM GGCL_Actual A_prev
+     WHERE A_prev.particulars = A.particulars)) AS "Variance vs LY YTD"
+
+FROM '${inputs.matric_ytd}_Actual' A
+JOIN '${inputs.matric_ytd}_Aop' B USING ("Particulars")
+WHERE '${inputs.date_filter_ytd.value}' = '2025'
+AND A.particulars IN ('GROSS %', 'EBITDA %', 'EBT %', 'EBIT %')
+AND NOT (
+    TRIM(A.particulars) = ''
+        AND (COALESCE(A."jan-25", 0)) = 0
+)
+
 ORDER BY A.sno ASC;
 ```
 
@@ -1445,9 +1535,9 @@ WITH CalendarYears AS (
     FROM information_schema.columns
     WHERE table_name = 'GGCL_Actual'  
     AND column_name LIKE 'jan-%'  -- Change filter to Jan-based columns
-    AND RIGHT(column_name, 2)::INTEGER <= 24  -- Ensures only valid years
+    AND RIGHT(column_name, 2)::INTEGER  -- Ensures only valid years
 )
-SELECT 'Dec-' || LPAD(CAST(MAX(YTD) AS TEXT), 2, '0') AS max_date_ytd
+SELECT 'Jan-' || LPAD(CAST(MAX(YTD) AS TEXT), 2, '0') AS max_date_ytd
 FROM CalendarYears;
 
 ```

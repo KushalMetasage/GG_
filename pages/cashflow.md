@@ -1,5 +1,5 @@
 <div class="relative">  
-    <h1 class="text-lg m-0">💰 Cash Flow Analysis</h1>
+    <h1 class="text-lg m-0 font-bold">💰 Cash Flow </h1>
 </div>
 
 
@@ -25,7 +25,7 @@
 
     <!-- Left Column: Cash Flow Table -->
     <div>
-        <DataTable data={cashflow} rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title="Values are in Million USD">
+        <DataTable data={cashflow} rowshadowing={true} headerFontColor=Bold headerColor=#FFD700 title="Values are in Million USD ($)">
             <Column id="particular" title="Metric"/>
             <Column id="Dec 2023" align="center" title="Dec 2023" fmt="0.00"/>
             <Column id="Dec 2024" align="center" title="Dec 2024" fmt="0.00"/>
