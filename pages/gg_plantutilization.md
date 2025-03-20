@@ -1,16 +1,20 @@
-<Grid cols = 2>
+<Grid cols = 3>
 
 <div class="relative mt-3">  
-    <h1 class="text-lg m-0">🏭 Plant Utilization</h1>
+    <h1 class="text-lg m-0 font-bold">🏭 Plant Utilization</h1>
 </div>
 
 
 
-<div>
+<div class = "relative relative mb-5 mt-1 ml-25">
 <Dropdown data={date_filter} name=date_filter value=date_filter title="Date" defaultValue="Jan-25" order="date_sort desc"/>
 
 </div>
-
+<div class= "relative mt-5 ml-30">
+<!-- Last Updated Text on the Right -->
+    <p class="text-sm text-grey ml-auto">
+        📅 Last Updated: <Value data={max_date} />
+    </p>
 </Grid>
  
 <div class="flex items-center justify-between w-full">
@@ -20,10 +24,6 @@
         <ButtonGroupItem valueLabel="Global Green Europe" value="GGE" />
     </ButtonGroup>
 
-    <!-- Last Updated Text on the Right -->
-    <p class="text-sm text-grey ml-auto">
-        📅 Last Updated: <Value data={max_date} />
-    </p>
 </div>
 
 <div class="mt-10">
