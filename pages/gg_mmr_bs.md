@@ -9,7 +9,7 @@
 
 <div class>
 
-<Dropdown data={date_filter} name=date_filter value=date_filter title="Start" defaultValue="Dec-24">
+<Dropdown data={date_filter} name=date_filter value=date_filter title="Start" defaultValue="Dec-24" order="date_sort desc">
     <DropdownOption value="Dec-24" valueLabel="Dec-24" />
 </Dropdown>
 
@@ -76,7 +76,7 @@
      <Column 
         id="Selected_Date_1"
         name="${inputs.date_filter.value}"
-        fmt="0.00"
+        fmt="$0.00"
         align="center" 
         totalAgg="sum" 
         subtotalAgg="sum"
@@ -86,7 +86,7 @@
    <Column 
         id="Selected_Date_2"
         name="${inputs.date_filter_1.value}" 
-        fmt="0.00" 
+        fmt="$0.00" 
         totalAgg="sum"
         align="center" 
         subtotalAgg="sum"
@@ -96,7 +96,7 @@
      <Column 
         id="Variance" 
         name={"Variance (${inputs.date_filter_1.value} vs ${inputs.date_filter.value})"} 
-        fmt="0.00" 
+        fmt="$0.00" 
         totalAgg="sum" 
         subtotalAgg="sum"
         title="Variance"
@@ -106,7 +106,6 @@
     />      
 
 </DataTable>
-
 
 
 
@@ -141,24 +140,29 @@ ORDER BY subcategory, particulars;
 
 ```sql date_filter
 SELECT 
-    UPPER(LEFT(column_name, 1)) || LOWER(SUBSTRING(column_name FROM 2)) AS date_filter
+    UPPER(LEFT(column_name, 1)) || LOWER(SUBSTRING(column_name FROM 2)) AS date_filter,
+    STRPTIME(column_name, '%b-%y') AS date_sort
 FROM information_schema.columns
 WHERE table_name = '${inputs.matric}_BS'  
 AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
-ORDER BY column_name;
+GROUP BY ALL
+ORDER BY date_sort DESC;
+
 ```
 
 ```sql date_filter_1
 WITH AvailableDates AS (
-    SELECT column_name 
-    FROM information_schema.columns 
+    SELECT 
+        UPPER(LEFT(column_name, 1)) || LOWER(SUBSTRING(column_name FROM 2)) AS date_filter,
+        column_name AS raw_date
+    FROM information_schema.columns
     WHERE table_name = '${inputs.matric}_BS'  
     AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
 ),
 SelectedDate AS (
     SELECT 
         COALESCE('${inputs.date_filter.value}', 
-            (SELECT MAX(column_name) FROM AvailableDates)
+            (SELECT MAX(raw_date) FROM AvailableDates)
         ) AS selected_date
 ), 
 PreviousYear AS (
@@ -166,11 +170,23 @@ PreviousYear AS (
         selected_date,
         LEFT(selected_date, 3) || '-' || CAST(CAST(RIGHT(selected_date, 2) AS INTEGER) - 1 AS TEXT) AS previous_date
     FROM SelectedDate
+),
+CheckDate AS (
+    SELECT 
+        selected_date AS date_filter,
+        UPPER(LEFT(previous_date, 1)) || LOWER(SUBSTRING(previous_date FROM 2)) AS date_filter_1
+    FROM PreviousYear
 )
 SELECT 
-    selected_date AS date_filter,
-    UPPER(LEFT(previous_date, 1)) || LOWER(SUBSTRING(previous_date FROM 2)) AS date_filter_1
-FROM PreviousYear;
+    c.date_filter, 
+    c.date_filter_1, 
+    CASE 
+        WHEN a.date_filter IS NULL THEN 'Invalid Date'
+        ELSE 'Valid Date'
+    END AS status
+FROM CheckDate c
+LEFT JOIN AvailableDates a ON c.date_filter_1 = a.date_filter;
+
 ```
 
 
@@ -188,39 +204,5 @@ FROM (
     WHERE table_name = '${inputs.matric}_BS'
     AND column_name NOT IN ('category', 'sno', 'no', 'subcategory', 'particulars') -- Exclude non-date columns
 ) AS subquery;
-```
-
-```sql test
-WITH AvailableDates AS (
-    SELECT column_name 
-    FROM information_schema.columns 
-    WHERE table_name = '${inputs.matric}_BS'  
-    AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
-),
-
-SelectedDate AS (
-    SELECT 
-        '${inputs.date_filter.value}' AS selected_date,
-        -- Compute previous year date dynamically (e.g., Aug-23 → Aug-22)
-        LEFT('${inputs.date_filter.value}', 3) || '-' || 
-        CAST(CAST(RIGHT('${inputs.date_filter.value}', 2) AS INTEGER) - 1 AS TEXT) 
-        AS previous_year_date
-),
-
-Validation AS (
-    SELECT 
-        s.selected_date,
-        s.previous_year_date,
-        CASE 
-            WHEN NOT EXISTS (
-                SELECT 1 FROM AvailableDates WHERE column_name = s.previous_year_date
-            ) 
-            THEN 'Invalid Date for ' || s.previous_year_date
-            ELSE NULL 
-        END AS error_message
-    FROM SelectedDate s
-)
-
-SELECT * FROM Validation;
 ```
 

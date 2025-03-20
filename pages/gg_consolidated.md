@@ -64,12 +64,14 @@ PreviousYear AS (
 
 UnpivotedActual AS (
     -- Unpivot GGCL_Actual (India) & GGE_Actual (Europe)
-    SELECT 
+    SELECT
+        sno, 
         particulars, 
         date_column, 
         SUM(value) AS CY_Actual
     FROM (
         SELECT 
+            a.sno,
             a.particulars,
             UNNEST(ARRAY[
                 'apr-19', 'may-19', 'jun-19', 'jul-19', 'aug-19', 'sep-19', 'oct-19', 'nov-19', 'dec-19',
@@ -92,7 +94,8 @@ UnpivotedActual AS (
         
         UNION ALL
 
-        SELECT 
+        SELECT
+            b.sno, 
             b.particulars,
             UNNEST(ARRAY[
                 'apr-19', 'may-19', 'jun-19', 'jul-19', 'aug-19', 'sep-19', 'oct-19', 'nov-19', 'dec-19',
@@ -113,17 +116,19 @@ UnpivotedActual AS (
             ]) AS value
         FROM GGE_Actual b
     ) AS CombinedActual
-    GROUP BY particulars, date_column
+    GROUP BY sno,particulars, date_column
 ),
 
 UnpivotedAOP AS (
     -- Unpivot GGCL_AOP (India) & GGE_AOP (Europe)
-    SELECT 
+    SELECT
+        sno, 
         particulars, 
         date_column, 
         SUM(value) AS CY_AOP
     FROM (
         SELECT 
+            a.sno,
             a.particulars,
             UNNEST(ARRAY[
                 'apr-19', 'may-19', 'jun-19', 'jul-19', 'aug-19', 'sep-19', 'oct-19', 'nov-19', 'dec-19',
@@ -146,7 +151,8 @@ UnpivotedAOP AS (
         
         UNION ALL
 
-        SELECT 
+        SELECT
+            b.sno, 
             b.particulars,
             UNNEST(ARRAY[
                 'apr-19', 'may-19', 'jun-19', 'jul-19', 'aug-19', 'sep-19', 'oct-19', 'nov-19', 'dec-19',
@@ -167,21 +173,23 @@ UnpivotedAOP AS (
             ]) AS value
         FROM GGE_AOP b
     ) AS CombinedAOP
-    GROUP BY particulars, date_column
+    GROUP BY sno,particulars, date_column
 ),
 
 LY_Actual AS (
     -- Fetch Last Year Actuals
-    SELECT 
+    SELECT
+        ua.sno, 
         ua.particulars,
         SUM(ua.CY_Actual) AS LY_Actual
     FROM UnpivotedActual ua
     JOIN PreviousYear py 
     ON ua.date_column = py.ly_month_year
-    GROUP BY ua.particulars
+    GROUP BY ua.sno,ua.particulars
 )
 
-SELECT 
+SELECT
+    ua.sno, 
     ua.particulars,
     SUM(ua.CY_Actual) AS "CY Actual",
     SUM(COALESCE(uAOP.CY_AOP, 0)) AS "CY AOP",
@@ -190,13 +198,14 @@ SELECT
     SUM(ua.CY_Actual - COALESCE(ly.LY_Actual, 0)) AS "Variance vs LY"
 FROM UnpivotedActual ua
 LEFT JOIN UnpivotedAOP uAOP 
-    ON ua.particulars = uAOP.particulars AND ua.date_column = uAOP.date_column
+    ON ua.sno = uAOP.sno AND ua.particulars = uAOP.particulars AND ua.date_column = uAOP.date_column
 LEFT JOIN LY_Actual ly 
-    ON ua.particulars = ly.particulars
+    ON ua.sno = ly.sno AND ua.particulars = ly.particulars
 WHERE ua.date_column = (SELECT selected_month_year FROM SelectedDate)
 AND ua.particulars NOT IN ('GROSS %', 'EBITDA %', 'EBT %', 'EBIT %')
-GROUP BY ua.particulars
-HAVING SUM(ua.CY_Actual) != 0 OR SUM(COALESCE(uAOP.CY_AOP, 0)) != 0 OR SUM(COALESCE(ly.LY_Actual, 0)) != 0;
+GROUP BY ua.sno, ua.particulars
+HAVING SUM(ua.CY_Actual) != 0 OR SUM(COALESCE(uAOP.CY_AOP, 0)) != 0 OR SUM(COALESCE(ly.LY_Actual, 0)) != 0
+ORDER BY ua.sno ASC;
 ```
 
 ```sql gg_margins
@@ -216,12 +225,14 @@ PreviousYear AS (
 
 UnpivotedActual AS (
     -- Unpivot GGCL_Actual (India) & GGE_Actual (Europe)
-    SELECT 
+    SELECT
+        sno, 
         particulars, 
         date_column, 
         SUM(value) AS CY_Actual
     FROM (
         SELECT 
+            a.sno,
             a.particulars,
             UNNEST(ARRAY[
                 'apr-19', 'may-19', 'jun-19', 'jul-19', 'aug-19', 'sep-19', 'oct-19', 'nov-19', 'dec-19',
@@ -245,6 +256,7 @@ UnpivotedActual AS (
         UNION ALL
 
         SELECT 
+            b.sno,
             b.particulars,
             UNNEST(ARRAY[
                 'apr-19', 'may-19', 'jun-19', 'jul-19', 'aug-19', 'sep-19', 'oct-19', 'nov-19', 'dec-19',
@@ -265,17 +277,19 @@ UnpivotedActual AS (
             ]) AS value
         FROM GGE_Actual b
     ) AS CombinedActual
-    GROUP BY particulars, date_column
+    GROUP BY sno,particulars, date_column
 ),
 
 UnpivotedAOP AS (
     -- Unpivot GGCL_AOP (India) & GGE_AOP (Europe)
     SELECT 
+        sno,
         particulars, 
         date_column, 
         SUM(value) AS CY_AOP
     FROM (
         SELECT 
+            a.sno,
             a.particulars,
             UNNEST(ARRAY[
                 'apr-19', 'may-19', 'jun-19', 'jul-19', 'aug-19', 'sep-19', 'oct-19', 'nov-19', 'dec-19',
@@ -299,6 +313,7 @@ UnpivotedAOP AS (
         UNION ALL
 
         SELECT 
+            b.sno,
             b.particulars,
             UNNEST(ARRAY[
                 'apr-19', 'may-19', 'jun-19', 'jul-19', 'aug-19', 'sep-19', 'oct-19', 'nov-19', 'dec-19',
@@ -319,21 +334,23 @@ UnpivotedAOP AS (
             ]) AS value
         FROM GGE_AOP b
     ) AS CombinedAOP
-    GROUP BY particulars, date_column
+    GROUP BY sno,particulars, date_column
 ),
 
 LY_Actual AS (
     -- Fetch Last Year Actuals
     SELECT 
+        ua.sno,
         ua.particulars,
         SUM(ua.CY_Actual) AS LY_Actual
     FROM UnpivotedActual ua
     JOIN PreviousYear py 
     ON ua.date_column = py.ly_month_year
-    GROUP BY ua.particulars
+    GROUP BY ua.sno,ua.particulars
 )
 
-SELECT 
+SELECT
+    ua.sno, 
     ua.particulars,
     SUM(ua.CY_Actual) * 100 AS "CY Actual",
     SUM(COALESCE(uAOP.CY_AOP, 0)) * 100 AS "CY AOP",
@@ -342,12 +359,12 @@ SELECT
     SUM(ua.CY_Actual - COALESCE(ly.LY_Actual, 0)) * 100 AS "Variance vs LY"
 FROM UnpivotedActual ua
 LEFT JOIN UnpivotedAOP uAOP 
-    ON ua.particulars = uAOP.particulars AND ua.date_column = uAOP.date_column
+    ON ua.sno = uAOP.sno AND ua.particulars = uAOP.particulars AND ua.date_column = uAOP.date_column
 LEFT JOIN LY_Actual ly 
-    ON ua.particulars = ly.particulars
+    ON ua.sno = ly.sno AND ua.particulars = ly.particulars
 WHERE ua.date_column = (SELECT selected_month_year FROM SelectedDate)
 AND ua.particulars IN ('GROSS %', 'EBITDA %', 'EBT %', 'EBIT %')
-GROUP BY ua.particulars;
+GROUP BY ua.sno, ua.particulars;
 ```
 
 ```sql max_date

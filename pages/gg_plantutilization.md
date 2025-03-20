@@ -7,8 +7,8 @@
 
 
 <div>
-<Dropdown data={date_filter} name=date_filter value=date_filter title="Date" defaultValue="Jan-25">
-</Dropdown>
+<Dropdown data={date_filter} name=date_filter value=date_filter title="Date" defaultValue="Jan-25" order="date_sort desc"/>
+
 </div>
 
 </Grid>
@@ -52,9 +52,12 @@
 
 
 ```sql date_filter
-SELECT DISTINCT
-    month AS date_filter
-FROM GGE_plantutilization;
+SELECT 
+    month AS date_filter,
+    STRPTIME(month, '%b-%y') AS date_sort
+FROM GGE_plantutilization
+GROUP BY ALL
+ORDER BY date_sort DESC;
 ```
 
 ```sql plant_1

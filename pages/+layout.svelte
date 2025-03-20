@@ -7,7 +7,8 @@
 
 <div class="flex flex-col min-h-screen w-full">
     <!-- Main Content Area with Sidebar and Breadcrumbs Hidden -->
-    <EvidenceDefaultLayout {data} hideBreadcrumbs hideSidebar class="max-w-[100vw] w-full mx-auto flex-grow">
+    <EvidenceDefaultLayout {data} hideBreadcrumbs = true hideSidebar = true logo = /globalgreen.png neverShowQueries = true 
+    hideTOC = true>
         <slot slot="content" />
     </EvidenceDefaultLayout>
 
@@ -15,13 +16,14 @@
     <footer class="bg-gray-900 text-white py-4 px-6 shadow-md fixed bottom-0 left-0 w-full">
         <ul class="flex justify-center gap-6 text-sm">
             <li><a href="/" class="hover:text-green-400">🏠 Home</a></li>
-            <li><a href="/cashflow" class="hover:text-green-400">💰 Cashflow</a></li>
-            <li><a href="/gg_mmr_bs" class="hover:text-green-400">📊 Balance Sheet</a></li>
-            <li><a href="/gg_income_statement" class="hover:text-green-400">💵 Income Statement</a></li>
-            <li><a href="/gg_ytd_income" class="hover:text-green-400">🏦 YTD Income Statement</a></li>
-            <li><a href="/gg_consolidated" class="hover:text-green-400">💵 Consolidated Income</a></li>
-            <li><a href="/gg_plantutilization" class="hover:text-green-400">🏭 Plant Utilization</a></li>
             <li><a href="/gg_comment_business" class="hover:text-green-400">📈 Business Comments</a></li>
+            <li><a href="/income_statement_overview" class="hover:text-green-400">📑 Income Statement Overview</a></li>
+            <li><a href="/gg_mmr_bs" class="hover:text-green-400">📊 Balance Sheet</a></li>
+            <li><a href="/cashflow" class="hover:text-green-400">💰 Cash Flow Analysis</a></li>
+            <li><a href="/gg_plantutilization" class="hover:text-green-400">🏭 Plant Utilization</a></li>
+            
+            
+            
         </ul>
     </footer>
     
