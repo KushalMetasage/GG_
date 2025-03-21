@@ -37,8 +37,8 @@
  <Column id= "CY Actual" fmt='0.00' align="center"/>
  <Column id= "CY AOP" fmt='0.00' align="center"/>
  <Column id= "LY Actual" fmt='0.00' align="center"/>
- <Column id= "Variance vs AOP" fmt='0.00' align="center"/>
- <Column id= "Variance vs LY" fmt='0.00' align="center"/>
+ <Column id= "Variance vs AOP" fmt='0.00' align="center" />
+ <Column id= "Variance vs LY" fmt='0.00' align="center" />
 </DataTable>
 
 

@@ -34,8 +34,8 @@
  <Column id= "CY Actual" fmt='$0.00' align="center"/>
  <Column id= "CY AOP" fmt='$0.00' align="center"/>
  <Column id= "LY Actual" fmt='$0.00' align="center"/>
- <Column id= "Variance vs AOP" fmt='$0.00' align="center"/>
- <Column id= "Variance vs LY" fmt='$0.00' align="center"/>
+ <Column id= "Variance vs AOP" fmt='$0.00' align="center" contentType="delta"/>
+ <Column id= "Variance vs LY" fmt='$0.00' align="center" contentType="delta"/>
 </DataTable>
 
 <DataTable data={gg_margins_cons} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700>
@@ -43,8 +43,8 @@
  <Column id= "CY Actual" fmt='0.00"%"' align="center"/>
  <Column id= "CY AOP" fmt='0.00"%"' align="center"/>
  <Column id= "LY Actual" fmt='0.00"%"' align="center"/>
- <Column id= "Variance vs AOP" fmt='0.00"%"' align="center"/>
- <Column id= "Variance vs LY" fmt='0.00"%"' align="center"/>
+ <Column id= "Variance vs AOP" fmt='0.00"%"' align="center" contentType="delta"/>
+ <Column id= "Variance vs LY" fmt='0.00"%"' align="center" contentType="delta"/>
 </DataTable>
 
 <Grid cols = 3>
@@ -87,8 +87,8 @@
  <Column id= "CY Actual" fmt='$0.00' align="center"/>
  <Column id= "CY AOP" fmt='$0.00' align="center"/>
  <Column id= "LY Actual" fmt='$0.00' align="center"/>
- <Column id= "Variance vs AOP" fmt='$0.00' align="center"/>
- <Column id= "Variance vs LY" fmt='$0.00' align="center"/>
+ <Column id= "Variance vs AOP" fmt='$0.00' align="center" contentType="delta"/>
+ <Column id= "Variance vs LY" fmt='$0.00' align="center" contentType="delta"/>
 </DataTable>
 
 
@@ -98,8 +98,8 @@
  <Column id= "CY Actual" fmt='0.00"%"' align="center"/>
  <Column id= "CY AOP" fmt='0.00"%"' align="center"/>
  <Column id= "LY Actual" fmt='0.00"%"' align="center"/>
- <Column id= "Variance vs AOP" fmt='0.00"%"' align="center"/>
- <Column id= "Variance vs LY" fmt='0.00"%"' align="center"/>
+ <Column id= "Variance vs AOP" fmt='0.00"%"' align="center" contentType="delta"/>
+ <Column id= "Variance vs LY" fmt='0.00"%"' align="center" contentType="delta"/>
 </DataTable>
 
 <Grid cols = 3>
@@ -140,8 +140,8 @@
 <Column id= "CY Actual" fmt='$0.00' align="center"/>
 <Column id= "YTD AOP" fmt='$0.00' align="center"/>
 <Column id= "LY Actual YTD" fmt='$0.00' align="center"/>
-<Column id= "Variance vs AOP YTD" fmt='$0.00' align="center"/>
-<Column id= "Variance vs LY YTD" fmt='$0.00' align="center"/>
+<Column id= "Variance vs AOP YTD" fmt='$0.00' align="center" contentType="delta"/>
+<Column id= "Variance vs LY YTD" fmt='$0.00' align="center" contentType="delta"/>
 </DataTable>
 
 <DataTable data={ytd_margins} rows = 20 rowshadowing={true} headerFontColor=Bold headerColor=#FFD700>
@@ -149,8 +149,8 @@
 <Column id= "CY Actual" fmt='0.00"%"' align="center"/>
 <Column id= "YTD AOP" fmt='0.00"%"' align="center"/>
 <Column id= "LY Actual YTD" fmt='0.00"%"' align="center"/>
-<Column id= "Variance vs AOP YTD" fmt='0.00"%"' align="center"/>
-<Column id= "Variance vs LY YTD" fmt='0.00"%"' align="center"/>
+<Column id= "Variance vs AOP YTD" fmt='0.00"%"' align="center" contentType="delta"/>
+<Column id= "Variance vs LY YTD" fmt='0.00"%"' align="center" contentType="delta"/>
 </DataTable>
 
 

@@ -9,12 +9,12 @@
 
 <div class = "relative relative mb-5 mt-1">
 
-<Dropdown data={date_filter} name=date_filter value=date_filter title="Start" defaultValue="Dec-24" order="date_sort desc">
-    <DropdownOption value="Dec-24" valueLabel="Dec-24" />
+<Dropdown data={prev_year_column} name=prev_year_column value=prev_year_column title="Start" defaultValue="Dec-23" order="date_sort desc">
+    <DropdownOption value="Dec-23" valueLabel="Dec-23" />
 </Dropdown>
 
-<Dropdown data={date_filter_1} name=date_filter_1 value=date_filter_1 title="End" defaultValue="Dec-23">
-    <DropdownOption value="Dec-23" valueLabel="Dec-23" />
+<Dropdown data={next_year_of_prev} name=next_year_of_prev value=next_year_of_prev title="End" defaultValue="Dec-24">
+    <DropdownOption value="Dec-24" valueLabel="Dec-24" />
 </Dropdown>
 
 </div>
@@ -77,27 +77,27 @@
     
      <Column 
         id="Selected_Date_1"
-        name="${inputs.date_filter.value}"
+        name="${inputs.next_year_of_prev.value}"
         fmt="$0.00"
         align="center" 
         totalAgg="sum" 
         subtotalAgg="sum"
-        title = '{inputs.date_filter.value}'
+        title = '{inputs.next_year_of_prev.value}'
     />
             
    <Column 
         id="Selected_Date_2"
-        name="${inputs.date_filter_1.value}" 
+        name="${inputs.prev_year_column.value}" 
         fmt="$0.00" 
         totalAgg="sum"
         align="center" 
         subtotalAgg="sum"
-        title = '{inputs.date_filter_1.value}'
+        title = '{inputs.prev_year_column.value}'
     />
 
      <Column 
         id="Variance" 
-        name={"Variance (${inputs.date_filter_1.value} vs ${inputs.date_filter.value})"} 
+        name={"Variance (${inputs.next_year_of_prev.value} vs ${inputs.prev_year_column.value})"} 
         fmt="$0.00" 
         totalAgg="sum" 
         subtotalAgg="sum"
@@ -124,8 +124,8 @@ WITH mapped_data AS (
         END AS category_group,
         subcategory,  
         particulars,
-        "${inputs.date_filter.value}" AS Selected_Date_1,  -- Backticks replaced with double quotes
-        "${inputs.date_filter_1.value}" AS Selected_Date_2
+        "${inputs.next_year_of_prev.value}" AS Selected_Date_1,  -- Backticks replaced with double quotes
+        "${inputs.prev_year_column.value}" AS Selected_Date_2
     FROM "${inputs.matric}_BS"  -- Backticks replaced with double quotes
 )
 
@@ -140,54 +140,95 @@ FROM mapped_data
 ORDER BY subcategory, particulars;
 ```
 
-```sql date_filter
-SELECT 
-    UPPER(LEFT(column_name, 1)) || LOWER(SUBSTRING(column_name FROM 2)) AS date_filter,
-    STRPTIME(column_name, '%b-%y') AS date_sort
-FROM information_schema.columns
-WHERE table_name = '${inputs.matric}_BS'  
-AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
-GROUP BY ALL
+```sql prev_year_column
+WITH AvailableDates AS (
+    SELECT 
+        column_name,
+        STRPTIME(column_name, '%b-%y') AS date_sort
+    FROM information_schema.columns
+    WHERE table_name = '${inputs.matric}_BS'  
+      AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
+),
+WithPreviousYear AS (
+    SELECT 
+        ad.column_name,
+        ad.date_sort,
+        -- Format prev_year_column as 'Dec-23' (Title Case)
+        UPPER(LEFT(ad.column_name, 1)) || LOWER(SUBSTRING(ad.column_name FROM 2 FOR 2)) || '-' || 
+        LPAD(CAST(CAST(RIGHT(ad.column_name, 2) AS INTEGER) - 1 AS TEXT), 2, '0') AS prev_year_column
+    FROM AvailableDates ad
+),
+MatchedPrevious AS (
+    SELECT 
+        wp.prev_year_column,
+        wp.date_sort,
+        CASE 
+            WHEN LOWER(ad2.column_name) = LOWER(wp.prev_year_column) THEN 'Valid Date'
+            ELSE 'Invalid Date'
+        END AS status
+    FROM WithPreviousYear wp
+    LEFT JOIN AvailableDates ad2 ON LOWER(ad2.column_name) = LOWER(wp.prev_year_column) -- Ensure case-insensitive match
+)
+SELECT DISTINCT
+    prev_year_column, -- Already in Title Case (e.g., Dec-23)
+    date_sort
+FROM MatchedPrevious
+WHERE status = 'Valid Date'
 ORDER BY date_sort DESC;
 
 ```
 
-```sql date_filter_1
+```sql next_year_of_prev
 WITH AvailableDates AS (
     SELECT 
-        UPPER(LEFT(column_name, 1)) || LOWER(SUBSTRING(column_name FROM 2)) AS date_filter,
-        column_name AS raw_date
+        column_name,
+        STRPTIME(column_name, '%b-%y') AS date_sort
     FROM information_schema.columns
     WHERE table_name = '${inputs.matric}_BS'  
-    AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
+      AND column_name NOT IN ('sno', 'category', 'subcategory', 'no', 'particulars')
 ),
-SelectedDate AS (
+WithPreviousYear AS (
     SELECT 
-        COALESCE('${inputs.date_filter.value}', 
-            (SELECT MAX(raw_date) FROM AvailableDates)
-        ) AS selected_date
-), 
-PreviousYear AS (
-    SELECT 
-        selected_date,
-        LEFT(selected_date, 3) || '-' || CAST(CAST(RIGHT(selected_date, 2) AS INTEGER) - 1 AS TEXT) AS previous_date
-    FROM SelectedDate
+        ad.column_name,
+        ad.date_sort,
+        -- Format prev_year_column as 'Dec-23' (Title Case)
+        UPPER(LEFT(ad.column_name, 1)) || LOWER(SUBSTRING(ad.column_name FROM 2 FOR 2)) || '-' || 
+        LPAD(CAST(CAST(RIGHT(ad.column_name, 2) AS INTEGER) - 1 AS TEXT), 2, '0') AS prev_year_column
+    FROM AvailableDates ad
 ),
-CheckDate AS (
+MatchedPrevious AS (
     SELECT 
-        selected_date AS date_filter,
-        UPPER(LEFT(previous_date, 1)) || LOWER(SUBSTRING(previous_date FROM 2)) AS date_filter_1
-    FROM PreviousYear
+        wp.prev_year_column,
+        wp.date_sort,
+        CASE 
+            WHEN LOWER(ad2.column_name) = LOWER(wp.prev_year_column) THEN 'Valid Date'
+            ELSE 'Invalid Date'
+        END AS status
+    FROM WithPreviousYear wp
+    LEFT JOIN AvailableDates ad2 ON LOWER(ad2.column_name) = LOWER(wp.prev_year_column) -- Ensure case-insensitive match
+),
+WithNextYearOfPrev AS (
+    SELECT 
+        mp.prev_year_column,
+        mp.date_sort,
+        mp.status,
+        -- Format next_year_of_prev as 'Dec-24' (Title Case)
+        UPPER(LEFT(mp.prev_year_column, 1)) || LOWER(SUBSTRING(mp.prev_year_column FROM 2 FOR 2)) || '-' || 
+        LPAD(CAST(CAST(RIGHT(mp.prev_year_column, 2) AS INTEGER) + 1 AS TEXT), 2, '0') AS next_year_of_prev
+    FROM MatchedPrevious mp
+    LEFT JOIN AvailableDates ad3 ON 
+        LOWER(ad3.column_name) = LOWER(
+            UPPER(LEFT(mp.prev_year_column, 1)) || LOWER(SUBSTRING(mp.prev_year_column FROM 2 FOR 2)) || '-' || 
+            LPAD(CAST(CAST(RIGHT(mp.prev_year_column, 2) AS INTEGER) + 1 AS TEXT), 2, '0')
+        )
+    WHERE mp.prev_year_column = '${inputs.prev_year_column.value}'
 )
-SELECT 
-    c.date_filter, 
-    c.date_filter_1, 
-    CASE 
-        WHEN a.date_filter IS NULL THEN 'Invalid Date'
-        ELSE 'Valid Date'
-    END AS status
-FROM CheckDate c
-LEFT JOIN AvailableDates a ON c.date_filter_1 = a.date_filter;
+SELECT DISTINCT
+    next_year_of_prev, -- Now formatted in Title Case (e.g., Dec-24)
+    date_sort
+FROM WithNextYearOfPrev
+WHERE status = 'Valid Date'
+ORDER BY date_sort DESC;
 
 ```
 
@@ -207,4 +248,7 @@ FROM (
     AND column_name NOT IN ('category', 'sno', 'no', 'subcategory', 'particulars') -- Exclude non-date columns
 ) AS subquery;
 ```
+
+
+
 
